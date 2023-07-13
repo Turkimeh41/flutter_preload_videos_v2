@@ -44,8 +44,7 @@ class PreloadBloc extends Bloc<PreloadEvent, PreloadState> {
       // initialize: (e) async* {},
       onVideoIndexChanged: (e) {
         /// Condition to fetch new videos
-        final bool shouldFetch = (e.index + kPreloadLimit) % kNextLimit == 0 &&
-            state.urls.length == e.index + kPreloadLimit;
+        final bool shouldFetch = (e.index + kPreloadLimit) % kNextLimit == 0 && state.urls.length == e.index + kPreloadLimit;
 
         if (shouldFetch) {
           createIsolate(e.index);
@@ -67,8 +66,7 @@ class PreloadBloc extends Bloc<PreloadEvent, PreloadState> {
         /// Initialize new url
         _initializeControllerAtIndex(state.focusedIndex + 1);
 
-        emit(state.copyWith(
-            reloadCounter: state.reloadCounter + 1, isLoading: false));
+        emit(state.copyWith(reloadCounter: state.reloadCounter + 1, isLoading: false));
         log('🚀🚀🚀 NEW VIDEOS ADDED');
       },
     );
@@ -105,8 +103,7 @@ class PreloadBloc extends Bloc<PreloadEvent, PreloadState> {
   Future _initializeControllerAtIndex(int index) async {
     if (state.urls.length > index && index >= 0) {
       /// Create new controller
-      final VideoPlayerController _controller =
-          VideoPlayerController.network(state.urls[index]);
+      final VideoPlayerController _controller = VideoPlayerController.network(state.urls[index], formatHint: VideoFormat.hls);
 
       /// Add to [controllers] list
       state.controllers[index] = _controller;
